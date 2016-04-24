@@ -1,0 +1,19 @@
+{
+  "intents": [
+    {
+      "intent": "MyCallIntent",
+      "slots": [
+        {
+          "name": "Contact",
+          "type": "AMAZON.US_FIRST_NAME"
+        }
+      ]
+    },
+    {
+      "intent": "WhoToCallIntent"
+    },
+    {
+      "intent": "AMAZON.StopIntent"
+    }
+  ]
+}
