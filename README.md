@@ -1,5 +1,5 @@
 # VRHackathon2016
-The Seattle VR Hackathon was held at the University of Washington.
+The Seattle VR Hackathon was held at the University of Washington on April 22-24, 2016.
 
 During the Hackathons Friday night mixer, we formed into a group of three: Ronald Ning, Regina Luo, and myself Xandon Frogget. Ronald wanted to do something with the Amazon Echo hardware. Regina and I wanted to do Data visualization in VR. We tossed around several ideas and decided Alexa would be a great utility to assist while immersed in VR. Unfortunately this meant that the Data visualization would need to wait. The clouds slowly parted and the plan materialized. We would use Alexa as our personal servant while in VR.
 
