@@ -78,10 +78,10 @@ function onIntent(intentRequest, session, callback) {
         intentName = intentRequest.intent.name;
 
     // Dispatch to your skill's intent handlers
-    if ("MyCallIntent" === intentName) {
-        setCallerInSession(intent, session, callback);
-    } else if ("WhoToCallIntent" === intentName) {
-        getCallerFromSession(intent, session, callback);
+    if ("MyColorIsIntent" === intentName) {
+        setColorInSession(intent, session, callback);
+    } else if ("WhatsMyColorIntent" === intentName) {
+        getColorFromSession(intent, session, callback);
     } else if ("AMAZON.HelpIntent" === intentName) {
         getWelcomeResponse(callback);
     } else if ("AMAZON.StopIntent" === intentName || "AMAZON.CancelIntent" === intentName) {
@@ -107,11 +107,12 @@ function getWelcomeResponse(callback) {
     // If we wanted to initialize the session to have some attributes we could add those here.
     var sessionAttributes = {};
     var cardTitle = "Welcome";
-    var speechOutput = "Who would you like me to call?";
+    var speechOutput = "Welcome to the Alexa Skills Kit sample. " +
+        "Please tell me your favorite color by saying, my favorite color is red";
     // If the user either does not reply to the welcome message or says something that is not
     // understood, they will be prompted again with this text.
-    var repromptText = "Who?" +
-        "say it again";
+    var repromptText = "Please tell me your favorite color by saying, " +
+        "my favorite color is red";
     var shouldEndSession = false;
 
     callback(sessionAttributes,
@@ -120,7 +121,7 @@ function getWelcomeResponse(callback) {
 
 function handleSessionEndRequest(callback) {
     var cardTitle = "Session Ended";
-    var speechOutput = "Done!";
+    var speechOutput = "Thank you for trying the Alexa Skills Kit sample. Have a nice day!";
     // Setting this to true ends the session and exits the skill.
     var shouldEndSession = true;
 
@@ -128,25 +129,25 @@ function handleSessionEndRequest(callback) {
 }
 
 /**
- * Sets the caller in the session and prepares the speech to reply to the user.
+ * Sets the color in the session and prepares the speech to reply to the user.
  */
-function setCallerInSession(intent, session, callback) {
+function setColorInSession(intent, session, callback) {
     var cardTitle = intent.name;
-    var favoriteCallerSlot = intent.slots.Contact;
+    var favoriteColorSlot = intent.slots.Color;
     var repromptText = "";
     var sessionAttributes = {};
     var shouldEndSession = false;
     var speechOutput = "";
 
-    if (favoriteCallerSlot) {
-      var favoriteCaller = favoriteCallerSlot.value;
+    if (favoriteColorSlot) {
+      var favoriteColor = favoriteColorSlot.value;
       var https = require('https');
       
       https.get("https://vr.snorting.co.ke/mom.php", function(err, res, body){
         if(err){
-            sessionAttributes = createFavoriteCallerAttributes(favoriteCaller);
-            speechOutput = "Calling " + favoriteCaller;
-            repromptText = "Ask me by saying, who are you calling?";
+            sessionAttributes = createFavoriteColorAttributes(favoriteColor);
+            speechOutput = "I now know your favorite color is " + favoriteColor + ". You can ask me " + "your favorite color by saying, what's my favorite color?";
+            repromptText = "You can ask me your favorite color by saying, what's my favorite color?";
             console.log(repromptText);
             callback(sessionAttributes,buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
         }
@@ -155,9 +156,9 @@ function setCallerInSession(intent, session, callback) {
             console.log('Invalid Status Code Returned : ' + res.statusCode);
           }else{
              console.log(res.statusCode);
-            sessionAttributes = createFavoriteCallerAttributes(favoriteCaller);
-            speechOutput = "Calling " + favoriteCaller;
-            repromptText = "Ask me by saying, who are you calling?";
+            sessionAttributes = createFavoriteColorAttributes(favoriteColor);
+            speechOutput = "I now know your favorite color is " + favoriteColor + ". You can ask me " + "your favorite color by saying, what's my favorite color?";
+            repromptText = "You can ask me your favorite color by saying, what's my favorite color?";
             console.log(rempromptText);
             callback(sessionAttributes,buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
           }
@@ -165,34 +166,36 @@ function setCallerInSession(intent, session, callback) {
       });
 
     } else {
-        speechOutput = "I'm not sure who you would like me to call. Please try again";
-        repromptText = "Ask me by saying, who am I calling?";
+        speechOutput = "I'm not sure what your favorite color is. Please try again";
+        repromptText = "I'm not sure what your favorite color is. You can tell me your " +
+            "favorite color by saying, my favorite color is red";
       callback(sessionAttributes,buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
     }
 }
 
-function createFavoriteCallerAttributes(favoriteCaller) {
+function createFavoriteColorAttributes(favoriteColor) {
     return {
-        favoriteCaller: favoriteCaller
+        favoriteColor: favoriteColor
     };
 }
 
-function getCallerFromSession(intent, session, callback) {
-    var favoriteCaller;
+function getColorFromSession(intent, session, callback) {
+    var favoriteColor;
     var repromptText = null;
     var sessionAttributes = {};
     var shouldEndSession = false;
     var speechOutput = "";
 
     if (session.attributes) {
-        favoriteCaller = session.attributes.favoriteCaller;
+        favoriteColor = session.attributes.favoriteColor;
     }
 
-    if (favoriteCaller) {
-        speechOutput = "I am calling " + favoriteCaller;
+    if (favoriteColor) {
+        speechOutput = "Your favorite color is " + favoriteColor + ". Goodbye.";
         shouldEndSession = true;
     } else {
-        speechOutput = "I'm not sure who you would like me to call. Please try again";
+        speechOutput = "I'm not sure what your favorite color is, you can say, my favorite color " +
+            " is red";
     }
 
     // Setting repromptText to null signifies that we do not want to reprompt the user.
