@@ -1,0 +1,42 @@
+Phone (firend)
+
+Intent Schema:
+
+{
+  "intents": [
+    {
+      "intent": "MyCallIntent",
+      "slots": [
+        {
+          "name": "Contact",
+          "type": "AMAZON.US_FIRST_NAME"
+        }
+      ]
+    },
+    {
+      "intent": "WhoToCallIntent"
+    },
+    {
+      "intent": "AMAZON.StopIntent"
+    }
+  ]
+}
+
+
+LIST_OF_CONTACTS	Mom | Kenny | Stan
+
+
+Sample Utterances:
+
+WhoToCallIntent what number did I call
+WhoToCallIntent what is the number that I called
+WhoToCallIntent what did I tell them
+WhoToCallIntent what did I say
+WhoToCallIntent Call
+WhoToCallIntent yes
+WhoToCallIntent yup
+WhoToCallIntent sure
+WhoToCallIntent yes please
+MyCallIntent call {Contact}
+MyCallIntent contact {Contact}
+MyCallIntent message {Contact}
